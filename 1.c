@@ -24,7 +24,7 @@ int main() {
         printf("There is no fist largest distinct element.\n");
     } else {
         printf("The largest element is: %d\n", first);
-        printf("The fist largest element is: %d\n", second);
+        printf("The second largest element is: %d\n", second);
     }
 
     return 0;

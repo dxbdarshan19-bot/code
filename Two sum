@@ -1,0 +1,50 @@
+#include <stdlib.h>
+
+
+typedef struct {
+    int key;
+    int value;
+} HashElement;
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+    *returnSize = 2;
+    int* result = (int*)malloc(2 * sizeof(int));
+    
+
+    int hashSize = numsSize * 2;
+    if (hashSize < 500) hashSize = 500; // Minimum baseline size
+    
+    int* hashKey = (int*)calloc(hashSize, sizeof(int));
+    int* hashVal = (int*)calloc(hashSize, sizeof(int));
+    int* hasElement = (int*)calloc(hashSize, sizeof(int)); // tracks if bucket is occupied
+
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        
+      
+        int hashIndex = abs(complement) % hashSize;
+        while (hasElement[hashIndex]) {
+            if (hashKey[hashIndex] == complement) {
+                result[0] = hashVal[hashIndex];
+                result[1] = i;
+                
+                
+                free(hashKey); free(hashVal); free(hasElement);
+                return result;
+            }
+            hashIndex = (hashIndex + 1) % hashSize; // Linear probing
+        }
+        
+        // Insert current number into Hash Map
+        hashIndex = abs(nums[i]) % hashSize;
+        while (hasElement[hashIndex]) {
+            hashIndex = (hashIndex + 1) % hashSize;
+        }
+        hashKey[hashIndex] = nums[i];
+        hashVal[hashIndex] = i;
+        hasElement[hashIndex] = 1;
+    }
+    
+    free(hashKey); free(hashVal); free(hasElement);
+    return result;
+}
